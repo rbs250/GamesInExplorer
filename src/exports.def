@@ -1,0 +1,4 @@
+LIBRARY GamesCoverflow
+EXPORTS
+ DllGetClassObject PRIVATE
+ DllCanUnloadNow PRIVATE

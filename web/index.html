@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Games</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Direction: the user's iTunes Cover Flow, inside an actual Explorer folder.
+     World: a charcoal display shelf with floating game boxes and faded reflections.
+     Typography: quiet system UI because this is an everyday Windows tool.
+     Interaction: one centered cover, angled neighbors, continuous keyboard browsing.
+     Truth: Steam ownership and local installation are distinct; all artwork is local. -->
+<svg class="symbols" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+  <symbol id="search-icon" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="flow-icon" viewBox="0 0 24 24"><rect x="8" y="4" width="8" height="16" rx="1"/><path d="m5 6-3 1v10l3 1m14-12 3 1v10l-3 1"/></symbol>
+  <symbol id="grid-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="refresh-icon" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M5.3 8a7.5 7.5 0 0 1 12.4-3L20 8M4 16l2.3 3A7.5 7.5 0 0 0 18.7 16"/></symbol>
+  <symbol id="folder-icon" viewBox="0 0 24 24"><path d="M3 7V5a1 1 0 0 1 1-1h5l2 3h9a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/></symbol>
+  <symbol id="chevron-icon" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="plus-icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="play-icon" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></symbol>
+  <symbol id="info-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></symbol>
+  <symbol id="image-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 5-5 4 4 4-6 5 7"/></symbol>
+  <symbol id="close-icon" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="external-icon" viewBox="0 0 24 24"><path d="M14 3h7v7M21 3 10 14M10 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-6"/></symbol>
+</defs></svg>
+<main id="app">
+  <header>
+    <div class="heading"><h1>Games<span class="period">.</span></h1><span id="library-count">Loading library</span></div>
+    <div class="tools">
+      <div class="view-switch" role="group" aria-label="Library view">
+        <button id="flow-view" class="icon-button active" aria-label="Cover flow view" aria-pressed="true" title="Cover flow"><svg><use href="#flow-icon"/></svg></button>
+        <button id="grid-view" class="icon-button" aria-label="Grid view" aria-pressed="false" title="Grid"><svg><use href="#grid-icon"/></svg></button>
+      </div>
+      <label class="search"><svg><use href="#search-icon"/></svg><input id="search" type="search" placeholder="Find a game" aria-label="Find a game" autocomplete="off"><kbd>/</kbd></label>
+      <button id="refresh" class="icon-button" title="Refresh installed games" aria-label="Refresh installed games"><svg><use href="#refresh-icon"/></svg></button>
+      <button id="add" class="icon-button" title="Add a game" aria-label="Add a game"><svg><use href="#plus-icon"/></svg></button>
+    </div>
+  </header>
+  <section id="collection" aria-label="Game library">
+    <div id="shelf" role="region" aria-label="Game covers" tabindex="0"><div id="covers"></div></div>
+    <button id="previous" class="arrow previous" aria-label="Previous game"><svg><use href="#chevron-icon"/></svg></button>
+    <button id="next" class="arrow next" aria-label="Next game"><svg><use href="#chevron-icon"/></svg></button>
+    <div id="empty" hidden><h2>No games found</h2><p>Try another search, or add a game to your library.</p><button id="clear-search" class="soft-button">Clear search</button></div>
+    <div id="details" aria-live="polite" aria-atomic="true">
+      <div class="game-meta"><span class="installed-dot" aria-hidden="true"></span><span id="platform"></span><span id="size"></span></div>
+      <h2 id="game-title"></h2>
+      <div class="actions">
+        <button id="play" class="play"><svg><use href="#play-icon"/></svg><span>Play game</span></button>
+        <button id="game-info" class="secondary-button" title="See the back of the box" aria-label="Game info"><svg><use href="#info-icon"/></svg><span>Info</span></button>
+        <button id="open-folder" class="folder-button" title="Open installation folder" aria-label="Open installation folder"><svg><use href="#folder-icon"/></svg></button>
+      </div>
+    </div>
+    <div id="grid" hidden></div>
+  </section>
+  <footer>
+    <span id="position"></span><div id="filmstrip" aria-label="Jump to a game"></div>
+    <span class="keyboard-hint"><kbd>←</kbd><kbd>→</kbd> Browse <span>·</span> <kbd>Enter</kbd> <span id="keyboard-action">Play</span></span>
+    <label id="grid-size-control" hidden><span>Cover size</span><input id="grid-size" type="range" min="110" max="260" step="10" value="160" aria-label="Cover size"><output id="grid-size-value" for="grid-size">100%</output></label>
+  </footer>
+</main>
+<dialog id="game-box" aria-labelledby="box-title">
+  <div class="box-toolbar"><span>Game info</span><button id="close-info" class="icon-button" aria-label="Close game info" title="Close"><svg><use href="#close-icon"/></svg></button></div>
+  <div class="box-layout">
+    <aside class="box-artwork"><div id="box-cover"></div><button id="change-cover" class="secondary-button"><svg><use href="#image-icon"/></svg><span>Change cover</span></button><p id="cover-credit"></p></aside>
+    <article class="box-copy">
+      <h2 id="box-title"></h2><p id="box-synopsis"></p>
+      <div id="box-screenshots" aria-label="Game screenshots"></div>
+      <ul id="box-features"></ul>
+      <dl id="box-facts"></dl>
+      <div class="box-bottom"><button id="box-source" class="source-button"><span>Official game page</span><svg><use href="#external-icon"/></svg></button><span id="box-source-note"></span></div>
+    </article>
+  </div>
+</dialog>
+<div id="toast" role="status" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

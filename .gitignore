@@ -1,0 +1,25 @@
+.build/
+.deps/
+*.dll
+*.exe
+*.lib
+*.exp
+*.obj
+*.pdb
+*.ilk
+*.lnk
+User Covers/
+My Games/
+web/covers/
+web/screenshots/
+web/scan.lock
+web/launch.ini
+web/owned-steam.json
+web/owned-steam-attempt.txt
+web/owned-steam-feed.new.json
+web/library.json
+web/game-details.json
+web/*.new
+!examples/owned-steam.example.json
+__pycache__/
+.pytest_cache/

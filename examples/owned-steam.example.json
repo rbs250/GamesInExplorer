@@ -1,0 +1,8 @@
+{
+  "steamId": "76561198000000000",
+  "complete": true,
+  "games": [
+    { "appid": 100001, "name": "Example Game", "type": "game" },
+    { "appid": 200002, "name": "Another Example Game", "type": "game" }
+  ]
+}
